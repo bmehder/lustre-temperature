@@ -1,4 +1,6 @@
 /build/
 /.lustre/
 /dist/
+/.vercel/
 *.beam
+.env*
