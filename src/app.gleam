@@ -84,6 +84,8 @@ pub fn view(model: Model) -> Element(Message) {
             html.a(
               [
                 attribute.href("https://github.com/bmehder/lustre-temperature"),
+                attribute.target("_blank"),
+                attribute.rel("noopener noreferrer"),
                 attribute.aria_label("View source on GitHub"),
                 attribute.title("View source on GitHub"),
                 attribute.class(
