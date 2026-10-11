@@ -39,14 +39,16 @@ The build produces a static app in `dist/`, without the time travel inspector.
 
 ## Deploy to Vercel
 
-Requires Node.js and a signed-in Vercel account. Link the project once:
+Requires Node.js and a signed-in Vercel account. After building, link the
+output folder to the project once:
 
 ```sh
-npx --yes vercel@latest link --yes --project lustre-temperature
+npx --yes vercel@latest link --cwd dist --yes --project lustre-temperature
 ```
 
 Build locally and deploy the production app:
 
 ```sh
-sh scripts/deploy.sh
+gleam run -m lustre/dev --target erlang build app
+npx --yes vercel@latest deploy --cwd dist --prod
 ```
