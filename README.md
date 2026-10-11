@@ -1,31 +1,36 @@
-# Temperature experiment
+# Lustre temperature converter
 
-A small Celsius ↔ Fahrenheit converter, eventually using Lustre, Tailwind,
-and dark mode. For now, this project contains only the domain model.
+A small Celsius ↔ Fahrenheit experiment built with Lustre and Tailwind CSS.
+It follows your system's light or dark appearance preference.
 
-## One source of truth
+Edit either number input, then press Enter or leave the field to convert.
+Values display to one decimal place. The model stores one temperature in the
+unit of the latest edit and derives the other value, avoiding conversion loops.
 
-`Temperature` holds either `Celsius(Float)` or `Fahrenheit(Float)`, preserving
-the unit of the latest edit. It never stores two independently mutable values.
+## Run locally
 
-- A Celsius edit replaces the temperature with `Celsius(value)`.
-- A Fahrenheit edit replaces it with `Fahrenheit(value)`.
-- Rendering reads `in_celsius` and `in_fahrenheit` from that same temperature.
+Requires Gleam, Erlang/OTP, and Bun on your PATH. Lustre downloads the standalone
+Tailwind compiler on the first build.
 
-Conversion is a pure calculation, not another edit event, so it cannot trigger
-a feedback loop. The source value also avoids repeated round-trip conversion
-and the resulting floating-point drift.
+```sh
+gleam run -m lustre/dev --target erlang start app
+```
 
-The formulas are `F = C × 9 / 5 + 32` and `C = (F − 32) × 5 / 9`.
-For example, `Celsius(0.0)` displays as 0 °C and 32 °F;
-`Fahrenheit(212.0)` displays as 100 °C and 212 °F.
+Open [localhost:1234](http://localhost:1234).
 
-## UI concerns for later
+For the development-only time travel inspector, run:
 
-The UI will retain raw text for empty, invalid, or unfinished input such as `-`
-or `12.`. Parsing, display rounding, edit messages, and input validation belong
-there. Domain conversions use floats without rounding or enforcing a physical
-temperature range.
+```sh
+gleam run -m lustre/dev --target erlang start app_dev
+```
 
-Lustre, Tailwind, and dark mode are intentionally deferred to the UI step.
-# lustre-temperature
+Then open **Time Travel** in the lower-right corner.
+
+## Test and build
+
+```sh
+gleam test
+gleam run -m lustre/dev --target erlang build app
+```
+
+The build produces a static app in `dist/`, without the time travel inspector.
